@@ -29,7 +29,7 @@ class SubtitleReader
 	 *
 	 * @param      string  $extension  File extension
 	 */
-	public function setFormat($extension)
+	private function setFormat($extension)
 	{
 		$this->format = Format::initial($extension);
 	}
