@@ -1,0 +1,30 @@
+{
+    "name": "74genesis/subtitle-reader",
+
+    "type": "library",
+
+    "description": "Works with subtitles",
+    "keywords": ["subtitles"],
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/74Genesis/subtitlereader/issues",
+        "source": "https://github.com/74Genesis/subtitlereader"
+    },
+    "authors": [
+        {
+            "name": "Igor Razumov",
+            "email": "itsdev74@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "genesis\\SubtitleReader\\": "src/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
+}
