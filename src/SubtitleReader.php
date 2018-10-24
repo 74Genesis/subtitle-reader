@@ -41,7 +41,7 @@ class SubtitleReader
 	 */
 	public function loadFile($path)
 	{
-		$result = $this->format->loadFile($path);
+		$this->format->loadFile($path);
 	}
 
 	/**
@@ -51,7 +51,7 @@ class SubtitleReader
 	 */
 	public function loadString($string)
 	{
-		$result = $this->format->loadString($string);
+		$this->format->loadString($string);
 	}
 
 	/**
@@ -73,19 +73,18 @@ class SubtitleReader
 	 *
 	 * @return     <type>  As array.
 	 */
-	public function getSubtitlesArray()
+	public function getAsArray()
 	{
-		return $this->format->getSubtitlesArray();
+		return $this->format->getArray();
 	}
-
 
 	/**
 	 * Gets the subtitles in json format.
 	 *
 	 * @return     string  The subtitles json.
 	 */
-	public function getSubtitlesJson()
+	public function getAsJson()
 	{
-		return json_encode($this->format->getSubtitlesArray());
+		return json_encode($this->format->getArray());
 	}
 }

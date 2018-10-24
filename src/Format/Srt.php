@@ -7,12 +7,6 @@ use genesis\SubtitleReader\exception\ParsingException;
  */
 class Srt extends Format
 {
-	/**
-	 * Array with subtitles
-	 *
-	 * @var        array
-	 */
-	private $subtitles = [];
 
 	/**
 	 * Parses subtitles (divides them into blocks)
@@ -22,31 +16,22 @@ class Srt extends Format
 	protected function parse($rawSubtitles = "")
 	{
 		$blocks = preg_split("/\R{2}/m", $rawSubtitles);
-		foreach ($blocks as $key => $subtitleBlock) {
-			$this->addToSubtitleArray($subtitleBlock);
+		foreach ($blocks as $block) {
+			$data = $this->parseBlock($block);
+			if ($data !== false) {
+				$this->subtitles[] = $data;
+			}
 		}
 	}
 
 	/**
-	 *  Adds each block in $subtitles array
-	 *
-	 * @param      string  $subtitleBlock  The subtitle block
-	 */
-	private function addToSubtitleArray($subtitleBlock)
-	{
-		$data = $this->parseBlock($subtitleBlock);
-		if ($data !== false) {
-			$this->subtitles[] = $data;
-		}
-	}
-
-	/**
-	 * Gets a subtitle block
-	 * Returns an array containing text, start time and end time for subtitle
+	 * Parses one subtitle block
+	 * Returns array with timecodes and text of subtitle.
+	 * Returns false if parsing failed.
 	 *
 	 * @param      string        $subtitleBlock  The subtitle block
 	 *
-	 * @return     array|boolean 
+	 * @return     array|boolean
 	 */
 	private function parseBlock($subtitleBlock)
 	{
@@ -81,7 +66,7 @@ class Srt extends Format
 	}
 
 	/**
-	 * divides text into lines
+	 * Divides text into lines
 	 *
 	 * @param      string  $text   The text
 	 *
@@ -90,15 +75,5 @@ class Srt extends Format
 	public function parseRows($text)
 	{
 		return preg_split("/\R/m", trim($text));
-	}
-
-	/**
-	 * Returns the subtitles array.
-	 *
-	 * @return     array.
-	 */
-	public function getSubtitlesArray() 
-	{
-		return $this->subtitles;
 	}
 }

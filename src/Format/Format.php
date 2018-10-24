@@ -10,6 +10,12 @@ use genesis\SubtitleReader\Exception\FileException;
  */
 abstract class Format
 {
+	/**
+	 * Array with subtitles
+	 *
+	 * @var        array
+	 */
+	protected $subtitles = [];
 
 	/**
 	 * Gets format name and returns object for working with current format 
@@ -64,7 +70,22 @@ abstract class Format
 	abstract protected function parse($content);
 
 	/**
-	 * Gets the subtitles array.
+	 * Returns the subtitles array.
+	 *
+	 * @return     array.
 	 */
-	abstract public function getSubtitlesArray();
+	public function getArray() 
+	{
+		return $this->subtitles;
+	}
+
+	/**
+	 * Sets the subtitles array.
+	 *
+	 * @param      array  $subtitles  The subtitles array
+	 */
+	public function setArray($subtitles) 
+	{
+		$this->subtitles = $subtitles;
+	}
 }
