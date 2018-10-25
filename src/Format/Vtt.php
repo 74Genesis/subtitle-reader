@@ -92,6 +92,10 @@ class Vtt extends Format
 	 */
 	private function parseRows($text)
 	{
-		return preg_split("/\R/m", trim($text));
+		$rows = preg_split("/\R/m", trim($text));
+		foreach ($rows as $key => $row) {
+			$rows[$key] = trim($row);
+		}
+		return $rows;
 	}
 }
