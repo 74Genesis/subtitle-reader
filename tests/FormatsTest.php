@@ -29,6 +29,13 @@ class FormatsTest extends TestCase
 		]);
 	}
 
+	public function testGettingJson()
+	{
+		$sr = new SubtitleReader('srt');
+		$sr->loadFile(__DIR__."/some.srt");
+		$this->assertEquals($sr->getAsJson(), '[{"start":0,"end":1,"text":["Subtiles loaded..."]}]');
+	}
+
 	public function testSrtFormat()
 	{
 		$sr = new SubtitleReader('srt');
@@ -59,4 +66,38 @@ class FormatsTest extends TestCase
 			]
 		]);
 	}
+
+	public function testVttFormat()
+	{
+		$sr = new SubtitleReader('vtt');
+		$sr->loadString("
+			WEBVTT - Translation of that film I like
+
+			STYLE
+			::cue(b) {
+			  color: peachpuff;
+			}
+
+			1 - title
+			00:00:01.000 --> 00:01.000 line:0 position:20%
+			Row with <00:17.500> time
+			Row 2
+
+			NOTE comment.
+
+			1
+			00:00,000 --> 00:00:00.000 line:0 position:20%
+			Wrong format
+		");
+		$this->assertEquals($sr->getAsArray(), [
+			[
+				"start" => 1,
+				"end" => 1,
+				"text" => [
+					"Row with  time",
+					"Row 2"
+				]
+			]
+		]);
+	}	
 }

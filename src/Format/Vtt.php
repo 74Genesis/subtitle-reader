@@ -44,7 +44,7 @@ class Vtt extends Format
 		
 		$timeStart = $this->parseTimecode($matches[1]);
 		$timeEnd = $this->parseTimecode($matches[2]);
-		$text = $this->parseRows(htmlspecialchars($matches[3]));
+		$text = $this->parseRows($matches[3]);
 
 		return [
 			'start' => $timeStart,
@@ -84,7 +84,7 @@ class Vtt extends Format
 	} 
 
 	/**
-	 * Divides text into lines
+	 * Divides text into lines and removes timecodes from text
 	 *
 	 * @param      string  $text   The text
 	 *
@@ -94,7 +94,8 @@ class Vtt extends Format
 	{
 		$rows = preg_split("/\R/m", trim($text));
 		foreach ($rows as $key => $row) {
-			$rows[$key] = trim($row);
+			$row = preg_replace("/<(?:\d|:|.)*?>/", "", trim($row));
+			$rows[$key] = htmlspecialchars($row);
 		}
 		return $rows;
 	}
