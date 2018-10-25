@@ -50,4 +50,5 @@ $sr->getSubtitlesJson();
 ```
 
 ###### Форматы
-* "srt" - SubRip формат. Файлы имеют расширение `.srt`
+* "srt" - SubRip формат.
+* "vtt" - WebVTT формат.
