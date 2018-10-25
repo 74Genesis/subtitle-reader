@@ -18,9 +18,9 @@ abstract class Format
 	protected $subtitles = [];
 
 	/**
-	 * Gets format name and returns object for working with current format 
+	 * Gets format name and returns object for working with current format
 	 *
-	 * @param      string	formatClass  The format name
+	 * @param      string  $formatClass  The format name
 	 */
 	public static function initial($formatClass)
 	{
@@ -60,6 +60,27 @@ abstract class Format
 	public function loadString($string)
 	{
 		$this->parse($string);
+	}
+
+
+	/**
+	 * Converts time to internal format
+	 *
+	 * @param      string  $h      hours
+	 * @param      string  $m      minutes
+	 * @param      string  $s      seconds
+	 * @param      string  $ms     milliseconds
+	 *
+	 * @return     integer         time in internal format (seconds and milliseconds)
+	 */
+	public function timeToLocalFormat($h = "", $m = "", $s = "", $ms = "")
+	{
+		$h = (float) $h;
+		$m = (float) $m;
+		$s = (float) $s;
+		$ms = (float) ("0." . $ms);
+
+		return $h * 3600 + $m * 60 + $s + $ms;
 	}
 
 	/**
