@@ -85,7 +85,7 @@ class SubtitleReader
 	 */
 	public function getAsJson()
 	{
-		return json_encode($this->format->getArray());
+		return json_encode($this->formatObj->getArray());
 	}
 
 	public function saveAs($format = "", $path = "")

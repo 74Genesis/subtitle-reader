@@ -7,6 +7,11 @@ use PHPUnit\Framework\TestCase;
 
 class FormatsTest extends TestCase
 {
+    public function setUp()
+    {
+        @unlink(__DIR__ . "/subtitles.srt");
+    }
+
     /**
      * @expectedException genesis\SubtitleReader\Exception\FileException
      */
@@ -22,7 +27,7 @@ class FormatsTest extends TestCase
 		$sr->loadFile(__DIR__."/some.srt");
 		$this->assertEquals($sr->getAsArray(), [
 			[
-				"start" => 0,
+				"start" => 196331.559,
 				"end" => 1,
 				"text" => ["Subtiles loaded..."]
 			]
@@ -33,11 +38,12 @@ class FormatsTest extends TestCase
 	{
 		$sr = new SubtitleReader('srt');
 		$sr->loadFile(__DIR__."/some.srt");
-		$this->assertEquals($sr->getAsJson(), '[{"start":0,"end":1,"text":["Subtiles loaded..."]}]');
+		$this->assertEquals($sr->getAsJson(), '[{"start":196331.559,"end":1,"text":["Subtiles loaded..."]}]');
 	}
 
 	public function testSrtFormat()
 	{
+		// test loading
 		$sr = new SubtitleReader('srt');
 		$sr->loadString("
 			1
@@ -65,6 +71,13 @@ class FormatsTest extends TestCase
 				]
 			]
 		]);
+
+		// test saving to file
+		$sr2 = new SubtitleReader('srt');
+		$sr->loadFile(__DIR__ . "/some.srt");
+		$file = __DIR__ . "/subtitles.srt";
+		$sr->saveAs("srt", $file);
+		$content = file_get_contents($file);
 	}
 
 	public function testVttFormat()
@@ -99,5 +112,10 @@ class FormatsTest extends TestCase
 				]
 			]
 		]);
-	}	
+	}
+
+    public function tearDown()
+    {
+        @unlink(__DIR__ . "/subtitles.srt");
+    }
 }
