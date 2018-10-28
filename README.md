@@ -14,6 +14,9 @@ $sr = new SubtitleReader('srt');
 Загрузка субтитров из файла:
 $sr->loadFile("test.srt");
 
+Сохранение субтитров в файл. Поддерживаются форматы: "srt".
+$sr->saveAs('srt');
+
 Загрузка из строки:
 $sr->loadString("
     1

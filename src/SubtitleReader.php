@@ -16,22 +16,22 @@ class SubtitleReader
 	 * 
      * @var        Format
 	 */
-	private $format;
+	private $formatObj;
 	
-	function __construct($extension = "")
+	function __construct($format = "")
 	{
-		$this->setFormat($extension);
+		$this->setFormat($format);
 	}
 
 
 	/**
 	 * Sets the subtitles format.
 	 *
-	 * @param      string  $extension  File extension
+	 * @param      string  $format  File extension
 	 */
-	private function setFormat($extension)
+	private function setFormat($format)
 	{
-		$this->format = Format::initial($extension);
+		$this->formatObj = Format::initial($format);
 	}
 
 	/**
@@ -41,7 +41,7 @@ class SubtitleReader
 	 */
 	public function loadFile($path)
 	{
-		$this->format->loadFile($path);
+		$this->formatObj->loadFile($path);
 	}
 
 	/**
@@ -51,7 +51,7 @@ class SubtitleReader
 	 */
 	public function loadString($string)
 	{
-		$this->format->loadString($string);
+		$this->formatObj->loadString($string);
 	}
 
 	/**
@@ -75,7 +75,7 @@ class SubtitleReader
 	 */
 	public function getAsArray()
 	{
-		return $this->format->getArray();
+		return $this->formatObj->getArray();
 	}
 
 	/**
@@ -86,5 +86,13 @@ class SubtitleReader
 	public function getAsJson()
 	{
 		return json_encode($this->format->getArray());
+	}
+
+	public function saveAs($format = "", $path = "")
+	{
+		$currentSubtitles = $this->formatObj->getArray();
+		$newFormatObj = Format::initial($format);
+		$newFormatObj->setArray($currentSubtitles);
+		$newFormatObj->saveToFile($path);
 	}
 }

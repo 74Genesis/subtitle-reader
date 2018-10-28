@@ -1,6 +1,6 @@
 <?php
 namespace genesis\SubtitleReader\Format;
-use genesis\SubtitleReader\exception\ParsingException;
+use genesis\SubtitleReader\exception\FileException;
 
 /**
  * Class for working with an srt format
@@ -10,7 +10,6 @@ class Srt extends Format
 
 	/**
 	 * {@inheritdoc}
-	 * @param      string  $rawSubtitles
 	 */
 	protected function parse($rawSubtitles = "")
 	{
@@ -38,7 +37,7 @@ class Srt extends Format
 		$timeEnd = 0;
 		$text = "";
 
-		preg_match("/(\d{2}):(\d{2}):(\d{2}),(\d{3}).-->.(\d{2}):(\d{2}):(\d{2}),(\d{3})((?:.|\R)*)/", $subtitleBlock, $matches);
+		preg_match("/(\d{2}):(\d{2}):(\d{2}),(\d{3}).-->.(\d{2}):(\d{2}):(\d{2}),(\d{3})((?:.|\R)*)/m", $subtitleBlock, $matches);
 
 		if (count($matches) < 10) return false;
 
@@ -46,7 +45,6 @@ class Srt extends Format
 		$timeEnd = $this->timeToLocalFormat($matches[5], $matches[6], $matches[7], $matches[8]);
 
 		$text = $this->parseRows(htmlspecialchars($matches[9]));
-
 		return [
 			'start' => $timeStart,
 			'end' => $timeEnd,
@@ -68,5 +66,48 @@ class Srt extends Format
 			$rows[$key] = trim($row);
 		}
 		return $rows;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function saveToFile($path)
+	{
+		$start = "";
+		$end = "";
+		$lines = "";
+		$content = "";
+
+		$number = 1;
+		foreach ($this->subtitles as $key => $subtitle) {
+			$start = $this->timeToCurrentFormat((float) $subtitle['start']);
+			$end = $this->timeToCurrentFormat((float) $subtitle['end']);
+			$lines = implode("\r\n", $subtitle['text']);
+			$content .= $number . "\r\n" . $start . " --> " . $end . "\r\n" . $lines . "\r\n\r\n";
+			$number++;
+		}
+
+		$result = file_put_contents($path, $content);
+
+		if ($result === false)
+			throw new FileException("File save failed");
+		return true;
+	}
+
+	/**
+	 * Converts time for str format (hh:mm:ss,vvv)
+	 *
+	 * @param      integer  $raw    time in internal format
+	 *
+	 * @return     string   Returns converted time
+	 */
+	public function timeToCurrentFormat($raw)	
+	{
+		$h = sprintf("%02s", floor($raw / 3600));
+		$m = sprintf("%02s", floor($raw / 60 % 60));
+		$s = sprintf("%02s", floor($raw % 60));
+		$split = explode(".", (string)number_format($raw, 3));
+
+		return $h . ":" . $m . ":" . $s . "," . $split[1];
 	}
 }

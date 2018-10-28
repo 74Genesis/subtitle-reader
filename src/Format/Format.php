@@ -80,15 +80,24 @@ abstract class Format
 		$s = (float) $s;
 		$ms = (float) ("0." . $ms);
 
-		return $h * 3600 + $m * 60 + $s + $ms;
+		return ($h * 3600 + $m * 60 + $s + $ms);
 	}
 
 	/**
 	 * Parses subtitiles.
 	 *
-	 * @param     string  $content  String with subtitles
+	 * @param     string  $rawSubtitles  String with subtitles
 	 */
-	abstract protected function parse($content);
+	abstract protected function parse($rawSubtitles);
+
+ 	/**
+ 	 * Saves subtitles to file .
+ 	 *
+ 	 * @param      string   $path   The file path
+ 	 *
+ 	 * @return     boolean  Returns true if saveing was successful
+ 	 */
+	abstract public function saveToFile($path);
 
 	/**
 	 * Returns the subtitles array.

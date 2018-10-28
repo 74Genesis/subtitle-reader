@@ -1,6 +1,6 @@
 <?php
 namespace genesis\SubtitleReader\Format;
-use genesis\SubtitleReader\exception\ParsingException;
+use genesis\SubtitleReader\exception\FileException;
 
 /**
  * Class for working with an srt format
@@ -10,7 +10,6 @@ class Vtt extends Format
 
 	/**
 	 * {@inheritdoc}
-	 * @param      string  $rawSubtitles
 	 */
 	protected function parse($rawSubtitles = "")
 	{
@@ -55,7 +54,7 @@ class Vtt extends Format
 
 	/**
 	 * Parses timecode. Vtt has two formats of timecode
-	 * With hours and without. "mm:ss.ttt" or "hh:mm:ss.ttt"
+	 * With hours and without. "mm:ss.vvv" or "hh:mm:ss.vvv"
 	 *
 	 * @param      string   $timecode  The timecode
 	 *
@@ -98,5 +97,13 @@ class Vtt extends Format
 			$rows[$key] = htmlspecialchars($row);
 		}
 		return $rows;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function saveToFile($path = "")
+	{
+		throw new FileException("This function is not supported.");		
 	}
 }
