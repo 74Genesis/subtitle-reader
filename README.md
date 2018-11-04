@@ -55,3 +55,4 @@ $sr->getSubtitlesJson();
 ###### Форматы
 * "srt" - SubRip формат.
 * "vtt" - WebVTT формат.
+* "ssa" - SubStation Alpha и Advanced версия. Расширения .ssa и .ass.
