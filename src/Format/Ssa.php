@@ -82,10 +82,12 @@ class Ssa extends Format
         $text = "";
         $matches = [];
 
+        $subtitleBlock = preg_replace("/({.*?})/", "", $subtitleBlock);
+
         $colsCount = count($colPos);
         $matches = explode(",", $subtitleBlock, $colsCount);
 
-        if (count($matches) < 4) return false;
+        if (count($matches) < 3) return false;
         
         $timeStart = $this->parseTimecode($matches[$colPos['Start']]);
         $timeEnd = $this->parseTimecode($matches[$colPos['End']]);
