@@ -42,13 +42,13 @@ abstract class Format
     public function loadFile($path)
     {
         $content = "";
-        if (file_exists($path)) {
+        if (is_readable($path)) {
             $content = file_get_contents($path);
 
             if ($content === false) throw new FileException("Can't get content from file");
             $this->parse($content);
         } else {
-            throw new FileException("File doesn't exists");
+            throw new FileException("File doesn't exists or not available for reading");
         }
     }
 
