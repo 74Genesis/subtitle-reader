@@ -84,6 +84,8 @@ class Vtt extends Format
 
     /**
      * Divides text into lines and removes timecodes from text
+     * 
+     * TODO: allow html tags from WebVTT format.
      *
      * @param      string  $text   The text
      *
@@ -94,7 +96,7 @@ class Vtt extends Format
         $rows = preg_split("/\R/m", trim($text));
         foreach ($rows as $key => $row) {
             $row = preg_replace("/<(?:\d|:|.)*?>/", "", trim($row));
-            $rows[$key] = htmlspecialchars($row);
+            $rows[$key] = $row;
         }
         return $rows;
     }
@@ -102,8 +104,47 @@ class Vtt extends Format
     /**
      * {@inheritdoc}
      */
-    public function saveToFile($path = "")
+    public function saveToFile($path)
     {
-        throw new FileException("This function is not supported.");     
+        $start = "";
+        $end = "";
+        $lines = "";
+        $content = "WEBVTT\r\n";
+        $lineBreak = "\r\n\r\n";
+
+        $number = 1;
+        foreach ($this->subtitles as $key => $subtitle) {
+            if ($number == count($this->subtitles)) $lineBreak = "";
+            
+            $start = $this->timeToCurrentFormat((float) $subtitle['start']);
+            $end = $this->timeToCurrentFormat((float) $subtitle['end']);
+            $lines = implode("\r\n", $subtitle['text']);
+            $content .= $number . "\r\n" . $start . " --> " . $end . "\r\n" . $lines . $lineBreak;
+            $number++;
+        }
+
+        $result = file_put_contents($path, $content);
+
+        if ($result === false)
+            throw new FileException("File save failed");
+        return true;
     }
+
+    /**
+     * Converts time for str format (hh:mm:ss,vvv)
+     *
+     * @param      integer  $raw    time in internal format
+     *
+     * @return     string   Returns converted time
+     */
+    public function timeToCurrentFormat($raw)   
+    {
+        $h = sprintf("%02s", floor($raw / 3600));
+        $m = sprintf("%02s", floor($raw / 60 % 60));
+        $s = sprintf("%02s", floor($raw % 60));
+        $split = explode(".", (string)number_format($raw, 3));
+
+        return $h . ":" . $m . ":" . $s . "." . $split[1];
+    }
+
 }

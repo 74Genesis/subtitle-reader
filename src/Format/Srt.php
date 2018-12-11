@@ -44,7 +44,7 @@ class Srt extends Format
         $timeStart = $this->timeToLocalFormat($matches[1], $matches[2], $matches[3], $matches[4]);
         $timeEnd = $this->timeToLocalFormat($matches[5], $matches[6], $matches[7], $matches[8]);
 
-        $text = $this->parseRows(htmlspecialchars($matches[9]));
+        $text = $this->parseRows($matches[9]);
         return [
             'start' => $timeStart,
             'end' => $timeEnd,
@@ -54,6 +54,8 @@ class Srt extends Format
 
     /**
      * Divides text into lines
+     * 
+     * TODO: replace tags and any danger characters
      *
      * @param      string  $text   The text
      *
