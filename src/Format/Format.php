@@ -24,7 +24,7 @@ abstract class Format
      */
     public static function initial($formatClass)
     {
-        $formatClass = "\genesis\SubtitleReader\Format\\" . $formatClass;
+        $formatClass = "\genesis\SubtitleReader\Format\\" . ucfirst($formatClass);
         if (class_exists($formatClass)) {
             return new $formatClass();
         }

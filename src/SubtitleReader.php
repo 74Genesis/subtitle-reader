@@ -2,8 +2,8 @@
 
 namespace genesis\SubtitleReader;
 
-use genesis\SubtitleReader\format\Format;
-use genesis\SubtitleReader\exception\FileException;
+use genesis\SubtitleReader\Format\Format;
+use genesis\SubtitleReader\Exception\FileException;
 
 
 /**

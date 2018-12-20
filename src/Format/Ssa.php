@@ -1,7 +1,7 @@
 <?php
 namespace genesis\SubtitleReader\Format;
-use genesis\SubtitleReader\exception\FileException;
-use genesis\SubtitleReader\exception\ParsingException;
+use genesis\SubtitleReader\Exception\FileException;
+use genesis\SubtitleReader\Exception\ParsingException;
 
 /**
  * Class for working with .ssa/.ass format

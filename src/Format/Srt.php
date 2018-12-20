@@ -1,6 +1,6 @@
 <?php
 namespace genesis\SubtitleReader\Format;
-use genesis\SubtitleReader\exception\FileException;
+use genesis\SubtitleReader\Exception\FileException;
 
 /**
  * Class for working with an .srt format
